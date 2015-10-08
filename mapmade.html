@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title> 
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 80%;
+      }
+    </style>
+  </head>
+
+  <body>
+  <!--form start-->
+  <form>
+    <input type='text' id="Address">
+    <button id= "buttonClick">clickToResults</button>
+  </form>
+  <!--form end-->
+
+  <div id="map"></div><!--to insert the element here-->    
+    <script src = "http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    
+   
+
+    <script type = "text/javascript">
+
+
+      var lati;
+      var longi;
+    $(document).ready(function()
+    {
+
+      $("#buttonClick").click(function (e)
+      {
+        e.preventDefault();
+
+        var address = $("#Address").val();
+        console.log(address);
+        var API_KEY = 'AIzaSyC-T-ps2lC7w14js6Tmg2RykUm0iDmFvi0';
+        console.log(API_KEY);
+
+        $.ajax({
+        url: 'https://maps.googleapis.com/maps/api/geocode/json?address='+address+'&key='+API_KEY,
+        type: 'GET',
+      })
+      .done(function(data) {
+        console.log("success");
+        //console.log(data);
+
+        lat = parseFloat(data.results[0].geometry.location.lat);
+        console.log(lati);
+
+        longi = parseFloat(data.results[0].geometry.location.lng);
+        console.log(longi);
+
+
+      })
+      .fail(function() {
+        console.log("error");
+      })
+      .always(function() {
+        console.log("complete");
+      });
+      
+      
+      });
+
+    })
+
+
+
+    function initMap() {
+      // Create a map object and specify the DOM element for display.
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: lati, lng: longi},
+        // Set mapTypeId to google.maps.MapTypeId.SATELLITE in order
+        // to activate satellite imagery.
+        mapTypeId: google.maps.MapTypeId.SATELLITE,
+        scrollwheel: false,
+        zoom: 8
+      })
+    }
+
+
+      
+
+    </script>
+
+
+      
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLLI1jOSlQ6I0DD2NRhbcuphg7N22w9mo&callback=initMap"
+        async defer></script>
+  </body>
+</html>
+
+
+<!-- 
+var input = latlngArray[i].substring(1, latlngArray[i].length-1);
+var latlngStr = input.split(",",2);
+var lat = parseFloat(latlngStr[0]);
+var lng = parseFloat(latlngStr[1]);
+latlngArray[i] = new google.maps.LatLng(lat, lng);
+ -->
